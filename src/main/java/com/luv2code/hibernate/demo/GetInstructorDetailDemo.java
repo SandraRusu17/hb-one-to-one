@@ -10,22 +10,19 @@ import org.hibernate.cfg.Configuration;
 public class GetInstructorDetailDemo {
     public static void main(String[] args) {
         // create Session Factory
-        SessionFactory factory = new Configuration()
+        // create session
+        try (SessionFactory factory = new Configuration()
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetails.class)
                 .buildSessionFactory();
-
-        // create session
-        Session session = factory.getCurrentSession();
-
-        try {
+             Session session = factory.getCurrentSession()) {
 
             // start a transaction
             session.beginTransaction();
 
             // get instructor detail object
-            int id = 2;
+            int id = 20;
             InstructorDetails instructorDetails = session.get(InstructorDetails.class, id);
 
             // print the instructor detail
@@ -39,8 +36,8 @@ public class GetInstructorDetailDemo {
 
             System.out.println("Done !");
 
-        } finally {
-            factory.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
